@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -10,9 +10,10 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class SearchComponent implements OnInit {
   @Input() input:String = 'defualt';
+  @Output() onSelect = new EventEmitter();
   myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  options: Object[] = [];
+  filteredOptions: Observable<Object[]>;
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges
@@ -22,9 +23,17 @@ export class SearchComponent implements OnInit {
       );
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  private _filter(value: string): Object[] {
+    const filterValue = value.toLowerCase();    
+    return this.options.filter(option => {
+      if(option['uid'].toString().toLowerCase().includes(filterValue)) return true;
+      else if(option['emnumber'].toString().toLowerCase().includes(filterValue)) return true;
+      else{}
+    });
+  }
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  select(object){
+    this.onSelect.emit(object);
+    (<HTMLInputElement> document.getElementById('input')).blur();
   }
 }

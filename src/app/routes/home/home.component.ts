@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   public online:Boolean = false;
   public linestatus:Boolean = false;
   public search:Boolean = false;
-  constructor(fb: FormBuilder,private  media: MediaMatcher) {
+  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar) {
     this.options = fb.group({
       top: 0,
       bottom: 0,
@@ -63,5 +64,9 @@ export class HomeComponent implements OnInit {
     window.onoffline = ()=>{ this.linestatus = true; this.online = false; }
   }
   
-  
+  onStudentSelect(data={}){
+    if(data != null){
+      this.snackbar.open(`شما ${data['uid']} انتخاب کردید`, 'باشه', { duration: 3000 });
+    }
+  }
 }

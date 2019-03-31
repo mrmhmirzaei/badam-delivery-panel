@@ -6,10 +6,10 @@
         <span *ngIf="mini == false">اتوماسیون تغذیه بادام</span>
         <span *ngIf="search == false && mini == true">اتوماسیون تغذیه بادام</span>
         <div *ngIf="mini == false" class="spacer"></div>
-        <app-search *ngIf="mini == false"></app-search>
+        <app-search (onSelect)="onStudentSelect($event)" *ngIf="mini == false"></app-search>
         <div *ngIf="mini == false" class="spacer"></div>
         <div *ngIf="search == false && mini == true" class="spacer"></div>
-        <app-search *ngIf="search == true && mini == true"></app-search>
+        <app-search (onSelect)="onStudentSelect($event)" *ngIf="search == true && mini == true"></app-search>
         <button *ngIf="mini == true" mat-icon-button (click)="search = !search">
             <svg *ngIf="search == false" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M31 28h-1.59l-.55-.55C30.82 25.18 32 22.23 32 19c0-7.18-5.82-13-13-13S6 11.82 6 19s5.82 13 13 13c3.23 0 6.18-1.18 8.45-3.13l.55.55V31l10 9.98L40.98 38 31 28zm-12 0c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/></svg>
             <svg *ngIf="search == true" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"/></svg>

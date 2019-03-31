@@ -9,7 +9,7 @@ import {map, startWith} from 'rxjs/operators';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  @Input() input:String = 'default';
+  @Input() input:String = 'defualt';
   myControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;

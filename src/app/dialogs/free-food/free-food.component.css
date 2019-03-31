@@ -1,0 +1,14 @@
+div.counter{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+div.counter button{
+    margin: 0 10px;
+}
+
+div[mat-dialog-actions]{
+    direction: ltr;
+}

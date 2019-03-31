@@ -1,0 +1,55 @@
+div.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+div.form{
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
+    border-radius: .4rem;
+    min-width: 300px;
+}
+
+div.inputs{
+    display: flex;
+    flex-direction: column;
+}
+
+div.inputs mat-form-field:nth-child(2){
+    margin-top: -10px;
+}
+
+div.buttons{
+    direction: ltr;
+}
+
+@media only screen and (max-width: 600px) {
+    div.form{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    div.inputs{
+        margin-top: 50px;
+    }
+
+    div.buttons{
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        bottom: 3vh;
+        left: 6vw;
+        right: 6vw;
+    }
+
+    button{
+        height: 40px;
+        line-height: 40px;
+    }
+}

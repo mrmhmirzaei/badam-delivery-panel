@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$rayda-system-primary: mat-palette($mat-orange,800);
+$rayda-system-accent: mat-palette($mat-grey, 700);
+$rayda-system-warn: mat-palette($mat-grey,900);
+
+$rayda-system-theme: mat-light-theme($rayda-system-primary, $rayda-system-accent, $rayda-system-warn);
+
+@include angular-material-theme($rayda-system-theme);

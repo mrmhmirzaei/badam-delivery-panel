@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+  <p>تعداد غذا هایی که میخواهید دانشجو ها آزاد بخرند را وارد کنید.</p>
+  <div class="counter">
+    <button mat-icon-button (click)="add()" autofocus="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"/></svg></button>
+    <div class="count">{{count}}</div>
+    <button mat-icon-button (click)="low()" autofocus="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="M38 26H10v-4h28v4z"/></svg></button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="submit(true)">ثبت</button>
+  <button mat-button (click)="submit(false)" autofocus="true">بیخیال</button>
+</div>

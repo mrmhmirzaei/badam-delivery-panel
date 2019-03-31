@@ -1,0 +1,30 @@
+<table mat-table [dataSource]="data">
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>نام و نام خانوادگی</th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef> کد دانشجویی </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="food">
+    <th mat-header-cell *matHeaderCellDef> نام غذا </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="drink">
+    <th mat-header-cell *matHeaderCellDef> نوشیدنی </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="optional">
+    <th mat-header-cell *matHeaderCellDef> مخلفات </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="Columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: Columns;"></tr>
+</table>

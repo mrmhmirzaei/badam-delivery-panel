@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatDialog, MatBottomSheet} from '@angular/material';
+import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
+import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,8 @@ export class HomeComponent implements OnInit {
   public online:Boolean = false;
   public linestatus:Boolean = false;
   public search:Boolean = false;
-  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar) {
+  public foodStatus:Boolean = true;
+  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar, private dialog:MatDialog, private bottomSheet:MatBottomSheet) {
     this.options = fb.group({
       top: 0,
       bottom: 0,
@@ -68,5 +71,13 @@ export class HomeComponent implements OnInit {
     if(data != null){
       this.snackbar.open(`شما ${data['uid']} انتخاب کردید`, 'باشه', { duration: 3000 });
     }
+  }
+
+  cardDefinition(){
+    this.dialog.open(CardDefinitionComponent);
+  }
+
+  penaltyUser(){
+    this.bottomSheet.open(PenaltyComponent);
   }
 }

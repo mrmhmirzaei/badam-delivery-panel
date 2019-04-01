@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-free-food-student',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FreeFoodStudentComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<FreeFoodStudentComponent>) { }
 
   ngOnInit() {
   }
 
+  submit(action=false){
+    if(action == false){
+      this.dialogRef.close();
+    } else {
+      this.dialogRef.close(null);
+    }
+  }
 }

@@ -27,12 +27,26 @@
             <div class="background"></div>
             <div class="body">
                 <div class="card">
-                    <div class="info">
-                        <h4>نام و نام خانوادگی</h4>
-                        <span>0000000000</span><br><br>
-                        <p><b>غذا</b> :‌ <span>نام غذا</span></p>
-                        <p><b>نوشیدنی</b> : <span>نام نوشیدنی</span></p>
-                        <p><b>مخلفات</b> : <span>دیگر موارد</span></p>
+                    <div class="content">
+                        <img src="https://pixinvent.com/demo/vuesax-vuejs-admin-dashboard-template/demo-1/img/2.c7efa131.jpg" alt="تصویر دانشجو">
+                        <div class="info">
+                            <h4>نام و نام خانوادگی</h4>
+                            <span>0000000000</span><br><br>
+                            <div class="error" *ngIf="foodStatus == false">
+                                <h3>این کاربر غذا ندارد!</h3>
+                            </div>
+                            <div *ngIf="foodStatus == true">
+                                <p><b>غذا</b> :‌ <span>نام غذا</span></p>
+                                <p><b>نوشیدنی</b> : <span>نام نوشیدنی</span></p>
+                                <p><b>مخلفات</b> : <span>دیگر موارد</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <p>وضعیت کارت : همه چی اوکی</p>
+                        <div class="spacer"></div>
+                        <button mat-button (click)="cardDefinition()">تعریف کارت</button>
+                        <button mat-button (click)="penaltyUser()">جریمه</button>
                     </div>
                 </div>
                 <app-table></app-table>

@@ -12,7 +12,13 @@ export class SearchComponent implements OnInit {
   @Input() input:String = 'defualt';
   @Output() onSelect = new EventEmitter();
   myControl = new FormControl();
-  options: Object[] = [];
+  options: Object[] = [{
+    cardId:1,
+    uid:4311370891,
+    firstname: 'محمد جواد',
+    lastname : 'یاحقی',
+    emnumber : 96111147154031
+  }];
   filteredOptions: Observable<Object[]>;
 
   ngOnInit() {

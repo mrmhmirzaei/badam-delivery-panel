@@ -26,6 +26,7 @@ import { SidenavComponent } from './includes/sidenav/sidenav.component';
 import { FreeFoodComponent } from './dialogs/free-food/free-food.component';
 import { FreeFoodStudentComponent } from './dialogs/free-food-student/free-food-student.component';
 import { CardDefinitionComponent } from './dialogs/card-definition/card-definition.component';
+import { PenaltyComponent } from './dialogs/penalty/penalty.component';
 
 const routes:Routes = [
   { path: '', component: HomeComponent },
@@ -43,6 +44,7 @@ const routes:Routes = [
     FreeFoodStudentComponent,
     LoginComponent,
     CardDefinitionComponent,
+    PenaltyComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ const routes:Routes = [
   entryComponents: [
     FreeFoodComponent,
     FreeFoodStudentComponent,
-    CardDefinitionComponent
+    CardDefinitionComponent,
+    PenaltyComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

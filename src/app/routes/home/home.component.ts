@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar, MatDialog} from '@angular/material';
+import {MatSnackBar, MatDialog, MatBottomSheet} from '@angular/material';
 import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
+import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
   public linestatus:Boolean = false;
   public search:Boolean = false;
   public foodStatus:Boolean = true;
-  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar, private dialog:MatDialog) {
+  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar, private dialog:MatDialog, private bottomSheet:MatBottomSheet) {
     this.options = fb.group({
       top: 0,
       bottom: 0,
@@ -74,5 +75,9 @@ export class HomeComponent implements OnInit {
 
   cardDefinition(){
     this.dialog.open(CardDefinitionComponent);
+  }
+
+  penaltyUser(){
+    this.bottomSheet.open(PenaltyComponent);
   }
 }

@@ -19,7 +19,7 @@ input:not([matInput]):not(:placeholder-shown){
     input:not([matInput]),
     input:not([matInput]):focus,
     input:not([matInput]):not(:placeholder-shown){
-        min-width: calc(100vw - 110px);
+        min-width: calc(100vw - 152px);
     }
 
     input:not([matInput]){

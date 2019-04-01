@@ -24,11 +24,12 @@ export class SearchComponent implements OnInit {
   }
 
   private _filter(value: string): Object[] {
-    const filterValue = value.toLowerCase();    
+    const filterValue = value.toLowerCase();
     return this.options.filter(option => {
       if(option['uid'].toString().toLowerCase().includes(filterValue)) return true;
       else if(option['emnumber'].toString().toLowerCase().includes(filterValue)) return true;
-      else{}
+      else if(option['firstname'].toString().toLowerCase().includes(filterValue)) return true;
+      else if(option['lastname'].toString().toLowerCase().includes(filterValue)) return true;
     });
   }
 

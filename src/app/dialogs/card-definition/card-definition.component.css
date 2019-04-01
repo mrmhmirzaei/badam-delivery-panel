@@ -1,6 +1,6 @@
 div.card{
-    width: 400px;
-    height: 200px;
+    min-width: 200px;
+    min-height: 100px;
     border-radius: .3rem;
     display: flex;
     align-items: center;

@@ -1,0 +1,15 @@
+<div mat-dialog-content>
+  <div class="card">
+    <div class="content" *ngIf="done == false">
+      <mat-spinner diameter="65"></mat-spinner>
+      <span>در انتظار کارت</span>
+    </div>
+    <div class="content" *ngIf="done == true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><path d="M18 32.34L9.66 24l-2.83 2.83L18 38l24-24-2.83-2.83z"/></svg>
+        <span>کارت شما تایید شد</span>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="submit(false)" autofocus="false">بیخیال</button>
+</div>

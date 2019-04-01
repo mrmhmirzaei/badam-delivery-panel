@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar, MatDialog} from '@angular/material';
-import { AddStudentCardComponent } from '../../dialogs/add-student-card/add-student-card.component';
+import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   public online:Boolean = false;
   public linestatus:Boolean = false;
   public search:Boolean = false;
+  public foodStatus:Boolean = true;
   constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar, private dialog:MatDialog) {
     this.options = fb.group({
       top: 0,
@@ -71,7 +72,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  addStudentCard(){
-    this.dialog.open(AddStudentCardComponent)
+  cardDefinition(){
+    this.dialog.open(CardDefinitionComponent);
   }
 }

@@ -42,6 +42,11 @@ div.card{
     border-radius: .3rem;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column;
+}
+
+div.card div.content{
+    display: flex;
     flex-wrap: nowrap;
 }
 
@@ -66,6 +71,24 @@ div.card div.info p{
     margin: 0;
     margin-top: 4px;
     margin-right: 10px;
+}
+
+div.card div.info div.error{
+    color: red;
+}
+
+div.card div.footer{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+div.card div.footer p{
+    margin: 0;
+}
+
+div.card div.footer div.spacer{
+    flex: 1 1;
 }
 
 button[mat-mini-fab]{

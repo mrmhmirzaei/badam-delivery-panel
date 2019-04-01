@@ -15,7 +15,6 @@
             <svg *ngIf="search == true" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"/></svg>
         </button>
         <mat-menu #appMenu="matMenu">
-            <button mat-menu-item (click)="addStudentCard()">تعریف کارت</button>
             <button mat-menu-item>خروج از حساب</button>
         </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="appMenu"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg></button>
@@ -28,13 +27,26 @@
             <div class="background"></div>
             <div class="body">
                 <div class="card">
-                    <img src="https://pixinvent.com/demo/vuesax-vuejs-admin-dashboard-template/demo-1/img/2.c7efa131.jpg" alt="تصویر دانشجو">
-                    <div class="info">
-                        <h4>نام و نام خانوادگی</h4>
-                        <span>0000000000</span><br><br>
-                        <p><b>غذا</b> :‌ <span>نام غذا</span></p>
-                        <p><b>نوشیدنی</b> : <span>نام نوشیدنی</span></p>
-                        <p><b>مخلفات</b> : <span>دیگر موارد</span></p>
+                    <div class="content">
+                        <img src="https://pixinvent.com/demo/vuesax-vuejs-admin-dashboard-template/demo-1/img/2.c7efa131.jpg" alt="تصویر دانشجو">
+                        <div class="info">
+                            <h4>نام و نام خانوادگی</h4>
+                            <span>0000000000</span><br><br>
+                            <div class="error" *ngIf="foodStatus == false">
+                                <h3>این کاربر غذا ندارد!</h3>
+                            </div>
+                            <div *ngIf="foodStatus == true">
+                                <p><b>غذا</b> :‌ <span>نام غذا</span></p>
+                                <p><b>نوشیدنی</b> : <span>نام نوشیدنی</span></p>
+                                <p><b>مخلفات</b> : <span>دیگر موارد</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <p>وضعیت کارت : همه چی اوکی</p>
+                        <div class="spacer"></div>
+                        <button mat-button (click)="cardDefinition()">تعریف کارت</button>
+                        <button mat-button>جریمه</button>
                     </div>
                 </div>
                 <app-table></app-table>

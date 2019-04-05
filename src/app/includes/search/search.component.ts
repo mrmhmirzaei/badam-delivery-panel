@@ -21,6 +21,15 @@ export class SearchComponent implements OnInit {
     foods: ['پیتزا مخصوص متین'],
     drinkings: [],
     optionals: []
+  },{
+    cardId: 2,
+    uid: 4311416644,
+    firstname : 'محمدحسین',
+    lastname: 'میرزایی',
+    emnumber: 0,
+    foods: ['پیتزا مخصوص جواد'],
+    drinkings: ['دوغ'],
+    optionals: []
   }];
   filteredOptions: Observable<Object[]>;
 

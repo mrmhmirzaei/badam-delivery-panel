@@ -1,6 +1,6 @@
-  <input *ngIf="input == 'defualt'" type="text" placeholder="جستوجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
+  <input *ngIf="input == 'defualt'" type="text" placeholder="جستجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
   <mat-form-field *ngIf="input == 'material'">
-    <input matInput placeholder="جستوجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
+    <input matInput placeholder="جستجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of filteredOptions | async" (click)="select(option)">

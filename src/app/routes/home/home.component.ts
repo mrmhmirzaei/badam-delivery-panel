@@ -12,46 +12,53 @@ import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
 })
 export class HomeComponent implements OnInit {
   public options: FormGroup;
-  public opened:Boolean = false;
-  public mode:String = 'side';
-  public mini:Boolean = false;
-  public online:Boolean = false;
-  public linestatus:Boolean = false;
-  public search:Boolean = false;
-  public foodStatus:Boolean = true;
-  constructor(fb: FormBuilder,private  media: MediaMatcher, private snackbar:MatSnackBar, private dialog:MatDialog, private bottomSheet:MatBottomSheet) {
+  public opened = false;
+  public mode = 'side';
+  public mini = false;
+  public online = false;
+  public linestatus = false;
+  public search = false;
+  public foodStatus = false;
+  public SelectedStudent: any = {
+    cardId: null,
+    uid: null,
+    firstname: null,
+    lastname : null,
+    emnumber : null
+  };
+  // tslint:disable-next-line:max-line-length
+  constructor(fb: FormBuilder, private  media: MediaMatcher, private snackbar: MatSnackBar, private dialog: MatDialog, private bottomSheet: MatBottomSheet) {
     this.options = fb.group({
       top: 0,
       bottom: 0,
       fixed: false,
     });
   }
-  
+
   ngOnInit() {
     this.sidenavEvent();
     this.OnlineEvent();
   }
-  
-  sidenavEvent(){
-    let query = this.media.matchMedia('(max-width: 1100px)');
-    let Listener = ()=> {      
-      if(query.matches == true) {
+
+  sidenavEvent() {
+    const query = this.media.matchMedia('(max-width: 1100px)');
+    const Listener = () => {
+      if (query.matches === true) {
         this.opened = false;
         this.mini = true;
         this.mode = 'push';
-      }
-      else{
+      } else {
         this.opened = true;
         this.mini = false;
         this.mode = 'side';
       }
     };
-    query.addListener(Listener);    
+    query.addListener(Listener);
     Listener();
   }
 
-  OnlineEvent(){
-    window.onload = ()=>{
+  OnlineEvent() {
+    window.onload = () => {
       if (navigator.onLine) {
         this.online = true;
         setTimeout(() => {
@@ -61,23 +68,31 @@ export class HomeComponent implements OnInit {
         this.linestatus = true;
         this.online = false;
       }
-    }
+    };
 
-    window.ononline = ()=> { this.online = true; setTimeout(()=>this.linestatus = false, 3000)}
-    window.onoffline = ()=>{ this.linestatus = true; this.online = false; }
-  }
-  
-  onStudentSelect(data={}){
-    if(data != null){
-      this.snackbar.open(`شما ${data['uid']} انتخاب کردید`, 'باشه', { duration: 3000 });
-    }
+    window.ononline = () => { this.online = true; setTimeout(() => this.linestatus = false, 3000); };
+    window.onoffline = () => { this.linestatus = true; this.online = false; };
   }
 
-  cardDefinition(){
+  onStudentSelect(data= {
+    cardId: '',
+    uid: '',
+    firstname: '',
+    lastname : '',
+    emnumber : ''
+  }) {
+    if (data != null) {
+
+      this.SelectedStudent = data;
+      this.snackbar.open(`شما ${data.firstname + ' ' + data.lastname} را انتخاب کردید`, 'باشه', { duration: 3000 });
+    }
+  }
+
+  cardDefinition() {
     this.dialog.open(CardDefinitionComponent);
   }
 
-  penaltyUser(){
+  penaltyUser() {
     this.bottomSheet.open(PenaltyComponent);
   }
 }

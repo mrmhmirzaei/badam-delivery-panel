@@ -13,8 +13,8 @@ export class SearchComponent implements OnInit {
   @Output() onSelect = new EventEmitter();
   myControl = new FormControl();
   options: Object[] = [{
-    cardId:1,
-    uid:4311370891,
+    cardId: 1,
+    uid: 4311370891,
     firstname: 'محمد جواد',
     lastname : 'یاحقی',
     emnumber : 96111147154031
@@ -29,7 +29,9 @@ export class SearchComponent implements OnInit {
       );
   }
 
-  private _filter(value: string): Object[] {
+  private _filter(value: string = ''): Object[] {
+
+    console.log(value);
     const filterValue = value.toLowerCase();
     return this.options.filter(option => {
       if(option['uid'].toString().toLowerCase().includes(filterValue)) return true;

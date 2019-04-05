@@ -26,24 +26,26 @@
         <mat-sidenav-content [formGroup]="options">
             <div class="background"></div>
             <div class="body">
-                <div class="card">
-                    <div class="content">
-                        <img src="https://pixinvent.com/demo/vuesax-vuejs-admin-dashboard-template/demo-1/img/2.c7efa131.jpg" alt="تصویر دانشجو">
-                        <div class="info">
-                            <h4>نام و نام خانوادگی</h4>
-                            <span>0000000000</span><br><br>
-                            <div class="error" *ngIf="foodStatus == false">
+                <div class="card" >
+                    <p *ngIf="!SelectedStudent.uid">در انتظار دریافت کارت </p>
+                    <div class="content" *ngIf="SelectedStudent.uid">
+                        <img src="/assets/user.png" width="250" height="250" alt="تصویر دانشجو">
+                        <div class="info" *ngIf="SelectedStudent.uid">
+                            <h4>{{SelectedStudent.firstname}} {{SelectedStudent.lastname}} </h4>
+                            <span>{{SelectedStudent.uid}}</span><br><br>
+                            <div  *ngIf="foodStatus == false">
                                 <h3>این کاربر غذا ندارد!</h3>
                             </div>
                             <div *ngIf="foodStatus == true">
-                                <p><b>غذا</b> :‌ <span>نام غذا</span></p>
-                                <p><b>نوشیدنی</b> : <span>نام نوشیدنی</span></p>
-                                <p><b>مخلفات</b> : <span>دیگر موارد</span></p>
+                                <p><b>غذا</b> :‌ <span>غذای اصلی</span></p>
+                                <p><b>نوشیدنی</b> : <span>ندارد</span></p>
+                                <p><b>مخلفات</b> : <span>ندارد </span></p>
+
                             </div>
                         </div>
                     </div>
-                    <div class="footer">
-                        <p>وضعیت کارت : همه چی اوکی</p>
+                    <div class="footer" *ngIf="SelectedStudent.uid">
+                        <p><b>وضعیت کارت</b> : <span>ندارد </span></p>
                         <div class="spacer"></div>
                         <button mat-button (click)="cardDefinition()">تعریف کارت</button>
                         <button mat-button (click)="penaltyUser()">جریمه</button>

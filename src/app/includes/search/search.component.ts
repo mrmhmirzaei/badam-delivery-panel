@@ -3,23 +3,31 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
+interface User {
+  cardId: number;
+  uid: number;
+  firstname: string;
+  lastname: string;
+  emnumber: number;
+}
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  @Input() input:String = 'defualt';
+  @Input() input = 'defualt';
+  // tslint:disable-next-line:no-output-on-prefix
   @Output() onSelect = new EventEmitter();
   myControl = new FormControl();
-  options: Object[] = [{
+  options: User[] = [{
     cardId: 1,
     uid: 4311370891,
     firstname: 'محمد جواد',
     lastname : 'یاحقی',
     emnumber : 96111147154031
   }];
-  filteredOptions: Observable<Object[]>;
+  filteredOptions: Observable<object[]>;
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges
@@ -29,20 +37,18 @@ export class SearchComponent implements OnInit {
       );
   }
 
-  private _filter(value: string = ''): Object[] {
+  private _filter(value: string = ''): object[] {
 
     console.log(value);
     const filterValue = value.toLowerCase();
     return this.options.filter(option => {
-      if(option['uid'].toString().toLowerCase().includes(filterValue)) return true;
-      else if(option['emnumber'].toString().toLowerCase().includes(filterValue)) return true;
-      else if(option['firstname'].toString().toLowerCase().includes(filterValue)) return true;
-      else if(option['lastname'].toString().toLowerCase().includes(filterValue)) return true;
+      // tslint:disable-next-line:max-line-length
+      if (option.uid.toString().toLowerCase().includes(filterValue)) { return true; } else if (option.emnumber.toString().toLowerCase().includes(filterValue)) { return true; } else if (option.firstname.toString().toLowerCase().includes(filterValue)) { return true; } else if (option.lastname.toString().toLowerCase().includes(filterValue)) { return true; }
     });
   }
 
-  select(object){
+  select(object) {
     this.onSelect.emit(object);
-    (<HTMLInputElement> document.getElementById('input')).blur();
+    (document.getElementById('input') as HTMLInputElement).blur();
   }
 }

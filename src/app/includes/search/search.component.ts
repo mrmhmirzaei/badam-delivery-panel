@@ -10,6 +10,10 @@ interface User {
   firstname: string;
   lastname: string;
   emnumber: number;
+  foods: string[];
+  drinkings: string[];
+  optionals: string[];
+
 }
 @Component({
   selector: 'app-search',
@@ -28,6 +32,18 @@ export class SearchComponent implements OnInit {
     firstname: 'محمد جواد',
     lastname : 'یاحقی',
     emnumber : 96111147154031,
+    foods: ['غذای اصلی'],
+    drinkings: [],
+    optionals: []
+  },{
+    cardId: 2,
+    uid: 4311416644,
+    firstname : 'محمدحسین',
+    lastname: 'میرزایی',
+    emnumber: 0,
+    foods: ['غذای اصلی'],
+    drinkings: [''],
+    optionals: []
   }];
   filteredOptions: Observable<object[]>;
 

@@ -101,3 +101,7 @@ button[mat-mini-fab] svg{
     width: 16px;
     height: 16px;
 }
+
+mat-chip-list{
+    margin: 5px;
+}

@@ -29,20 +29,20 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit() {
     this.loadChart();
-    setInterval(() => {
-       this.foods.forEach((food, i) => {
-         food.all = food.all + 1;
-         this.chart.data.datasets[1].data[i] = food.all;
-       });
-       this.chart.update();
-    }, 3000);
-    setInterval(() => {
-       this.foods.forEach((food, i) => {
-         food.deliveried = food.deliveried + 1;
-         this.chart.data.datasets[2].data[i] = food.deliveried;
-       });
-       this.chart.update();
-     }, 7000);
+    // setInterval(() => {
+    //    this.foods.forEach((food, i) => {
+    //      food.all = food.all + 1;
+    //      this.chart.data.datasets[1].data[i] = food.all;
+    //    });
+    //    this.chart.update();
+    // }, 3000);
+    // setInterval(() => {
+    //    this.foods.forEach((food, i) => {
+    //      food.deliveried = food.deliveried + 1;
+    //      this.chart.data.datasets[2].data[i] = food.deliveried;
+    //    });
+    //    this.chart.update();
+    //  }, 7000);
   }
 
   loadChart() {

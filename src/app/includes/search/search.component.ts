@@ -17,7 +17,10 @@ export class SearchComponent implements OnInit {
     uid: 4311370891,
     firstname: 'محمد جواد',
     lastname : 'یاحقی',
-    emnumber : 96111147154031
+    emnumber : 96111147154031,
+    foods: ['پیتزا مخصوص متین'],
+    drinkings: [],
+    optionals: []
   }];
   filteredOptions: Observable<Object[]>;
 
@@ -30,8 +33,6 @@ export class SearchComponent implements OnInit {
   }
 
   private _filter(value: string = ''): Object[] {
-
-    console.log(value);
     const filterValue = value.toLowerCase();
     return this.options.filter(option => {
       if(option['uid'].toString().toLowerCase().includes(filterValue)) return true;

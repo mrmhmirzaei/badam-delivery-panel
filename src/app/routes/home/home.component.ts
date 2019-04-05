@@ -18,15 +18,17 @@ export class HomeComponent implements OnInit {
   public online = false;
   public linestatus = false;
   public search = false;
-  public foodStatus = false;
   public SelectedStudent: any = {
     cardId: null,
     uid: null,
     firstname: null,
     lastname : null,
-    emnumber : null
+    emnumber : null,
+    foods: [],
+    drinkings: [],
+    optionals: []
   };
-  // tslint:disable-next-line:max-line-length
+  public studentData: Object[] = [];
   constructor(fb: FormBuilder, private  media: MediaMatcher, private snackbar: MatSnackBar, private dialog: MatDialog, private bottomSheet: MatBottomSheet) {
     this.options = fb.group({
       top: 0,
@@ -74,17 +76,13 @@ export class HomeComponent implements OnInit {
     window.onoffline = () => { this.linestatus = true; this.online = false; };
   }
 
-  onStudentSelect(data= {
-    cardId: '',
-    uid: '',
-    firstname: '',
-    lastname : '',
-    emnumber : ''
-  }) {
+  onStudentSelect(data= {}) {
     if (data != null) {
-
+      if(this.SelectedStudent['uid'] != null){
+        this.addToTable();
+      }
       this.SelectedStudent = data;
-      this.snackbar.open(`شما ${data.firstname + ' ' + data.lastname} را انتخاب کردید`, 'باشه', { duration: 3000 });
+      this.snackbar.open(`شما ${data['firstname'] + ' ' + data['lastname']} را انتخاب کردید`, 'باشه', { duration: 3000 });
     }
   }
 
@@ -94,5 +92,21 @@ export class HomeComponent implements OnInit {
 
   penaltyUser() {
     this.bottomSheet.open(PenaltyComponent);
+  }
+
+  addToTable(){
+    this.studentData.push(this.SelectedStudent);
+    this.SelectedStudent = {
+      cardId: null,
+      uid: null,
+      firstname: null,
+      lastname : null,
+      emnumber : null,
+      foods: [],
+      drinkings: [],
+      optionals: []
+    }
+    console.log("Added To Table");
+    
   }
 }

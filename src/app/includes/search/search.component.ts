@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import * as _ from 'lodash';
 
 interface User {
   cardId: number;
@@ -20,12 +21,13 @@ export class SearchComponent implements OnInit {
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onSelect = new EventEmitter();
   myControl = new FormControl();
+  selected = '';
   options: User[] = [{
     cardId: 1,
     uid: 4311370891,
     firstname: 'محمد جواد',
     lastname : 'یاحقی',
-    emnumber : 96111147154031
+    emnumber : 96111147154031,
   }];
   filteredOptions: Observable<object[]>;
 
@@ -38,8 +40,6 @@ export class SearchComponent implements OnInit {
   }
 
   private _filter(value: string = ''): object[] {
-
-    console.log(value);
     const filterValue = value.toLowerCase();
     return this.options.filter(option => {
       // tslint:disable-next-line:max-line-length

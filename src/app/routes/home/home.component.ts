@@ -1,13 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
+import {
+   Router,
+
+} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar, MatDialog, MatBottomSheet} from '@angular/material';
 import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
 import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
+import {LinuxCardServiceService} from '../../services/card/linux/linux-card-service.service';
+import {SocketService} from '../../services/global/socket.service';
+import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
+interface User {
+  cardId: number;
+  uid: number;
+  firstname: string;
+  lastname: string;
+  emnumber: number;
+  foods: string[];
+  drinkings: string[];
+  optionals: string[];
+
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  providers: [LinuxCardServiceService, SocketService],
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
@@ -18,7 +37,9 @@ export class HomeComponent implements OnInit {
   public online = false;
   public linestatus = false;
   public search = false;
-  public SelectedStudent: any = {
+  public msgTxt = '';
+  public delivered = true;
+  public SelectedStudent: User = {
     cardId: null,
     uid: null,
     firstname: null,
@@ -28,8 +49,19 @@ export class HomeComponent implements OnInit {
     drinkings: [],
     optionals: []
   };
-  public studentData: Object[] = [];
-  constructor(fb: FormBuilder, private  media: MediaMatcher, private snackbar: MatSnackBar, private dialog: MatDialog, private bottomSheet: MatBottomSheet) {
+  // tslint:disable-next-line:ban-types
+  public studentData: User[] = [];
+  public udata = null;
+  public message = '';
+  constructor(
+    fb: FormBuilder,
+    private media: MediaMatcher,
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
+    private router: Router,
+    private socket: SocketService,
+    private linuxCard: LinuxCardServiceService) {
     this.options = fb.group({
       top: 0,
       bottom: 0,
@@ -38,8 +70,82 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!localStorage.token) {
+
+      this.router.navigate(['/login']);
+    } else {
+      this.socket.socket = this.socket.connect();
+      this.socket.socket.on('delivermsg', (data) => {
+        this.msgTxt = data.message;
+        this.studentData = [];
+        this.SelectedStudent = {
+          cardId: null,
+          uid: null,
+          firstname: null,
+          lastname : null,
+          emnumber : null,
+          foods: [],
+          drinkings: [],
+          optionals: []
+        };
+      });
+
+      this.socket.socket.on('delivered', (data) => {
+        // tslint:disable-next-line:prefer-for-of
+        const elm = this.udata.find((option) => {
+
+          if (option.uid.toString() === data.uid) {
+            return true;
+          }
+        });
+        this.SelectedStudent = {
+          cardId : elm.uid,
+          uid: elm.uid,
+          firstname: elm.name,
+          lastname: elm.family,
+          emnumber: elm.uid,
+          foods: ['غذای اصلی'],
+          drinkings: [],
+          optionals: [],
+        };
+        if (!data.uid) {
+          this.snackbar.open(data.message, 'بستن', {
+            duration : 1000,
+          });
+        }
+
+        if (data.delivered) {
+          this.delivered = true;
+          this.playAudio('finish.ogg');
+         } else {
+          this.delivered = false;
+          this.playAudio('error.ogg');
+        }
+
+        this.message = data.message;
+      });
+      this.socket.socket.on('reserveds', (data) => {
+        if (localStorage.getItem('studentData_')) {
+
+          this.studentData = JSON.parse(localStorage.getItem('studentData_'));
+        }
+        this.udata = data;
+      });
+    }
     this.sidenavEvent();
     this.OnlineEvent();
+    this.linuxCard.connect();
+    this.linuxCard.GetCardData((data) => {
+      if (this.SelectedStudent.uid != null) {
+        this.addToTable();
+      }
+      this.socket.socket.emit('deliver', {
+        card : true,
+        meal : 2,
+        place : '',
+        uid : data,
+      });
+    });
   }
 
   sidenavEvent() {
@@ -76,13 +182,20 @@ export class HomeComponent implements OnInit {
     window.onoffline = () => { this.linestatus = true; this.online = false; };
   }
 
-  onStudentSelect(data= {}) {
+  onStudentSelective(data: User) {
+
+    if (this.SelectedStudent.uid != null) {
+      this.addToTable();
+    }
+
     if (data != null) {
-      if(this.SelectedStudent['uid'] != null){
-        this.addToTable();
-      }
-      this.SelectedStudent = data;
-      this.snackbar.open(`شما ${data['firstname'] + ' ' + data['lastname']} را انتخاب کردید`, 'باشه', { duration: 3000 });
+      this.socket.socket.emit('deliver', {
+        card : false,
+        meal : 2,
+        place : '',
+        uid : data.uid,
+      });
+      // this.SelectedStudent = data;
     }
   }
 
@@ -94,8 +207,20 @@ export class HomeComponent implements OnInit {
     this.bottomSheet.open(PenaltyComponent);
   }
 
-  addToTable(){
-    this.studentData.push(this.SelectedStudent);
+  addToTable() {
+    const findIndex = this.studentData.find((o) => {
+
+      if (o.uid === this.SelectedStudent.uid) {
+
+        return true;
+      }
+    });
+    if (findIndex) {
+
+      return true;
+    }
+    this.studentData.unshift(this.SelectedStudent);
+    localStorage.setItem(`studentData_`, JSON.stringify(this.studentData));
     this.SelectedStudent = {
       cardId: null,
       uid: null,
@@ -105,8 +230,19 @@ export class HomeComponent implements OnInit {
       foods: [],
       drinkings: [],
       optionals: []
-    }
-    console.log("Added To Table");
-    
+    };
+  }
+
+  exit() {
+
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
+  playAudio(n) {
+    const audio = new Audio();
+    audio.src =  '/assets/' + n;
+    audio.load();
+    audio.play();
   }
 }

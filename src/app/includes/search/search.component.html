@@ -1,9 +1,10 @@
-  <input *ngIf="input == 'defualt'" type="text" placeholder="جستجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
-  <mat-form-field *ngIf="input == 'material'">
-    <input matInput placeholder="جستجو دانشجو" [formControl]="myControl" [matAutocomplete]="auto" id="input">
+<mat-form-field style="width:100%; " *ngIf="this.options.length > 0"  appearance="outline">
+  <mat-label>ورود کد ملی</mat-label>
+    <input type="text"  aria-label="Number" matInput [formControl]="myControl"
+      [matAutocomplete]="auto"  >
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='select($event.option.value)' [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+        {{option['firstname']}}  {{option['lastname']}} | {{option['uid']}}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredOptions | async" (click)="select(option)">
-    <span>{{option['firstname']}}</span><span> {{option['lastname']}} </span> <span> | {{option['uid']}}</span>
-    </mat-option>
-  </mat-autocomplete>

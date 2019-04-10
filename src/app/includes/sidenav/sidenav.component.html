@@ -1,6 +1,17 @@
 <div class="content">
   <canvas id="canvas"></canvas>
     <div class="items">
+
+      <div class="item">
+          <mat-form-field >
+              <mat-label>انتخاب وعده</mat-label>
+              <mat-select [(ngModel)]="meal" (selectionChange)="change()">
+                <mat-option *ngFor="let m of meals" [value]="m.id">
+                  {{m.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
         <div class="item" *ngFor="let food of foods; let i = index; let index = index">
             <div class="content">
                 <h4>{{food['name']}}</h4><br>

@@ -1,11 +1,26 @@
 @import '~@angular/material/theming';
+@font-face {
+  font-family: SDF;
+  font-display: fallback;
+  src: url('assets/IRANSans4/eot/IRANSansWeb.eot'),
+       url('assets/IRANSans4/woff/IRANSansWeb.woff') format('woff'),
+}
+$custom-typography: mat-typography-config(
+  $font-family: 'SDF, monospace',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500)
+);
 
-@include mat-core();
+@include mat-core($custom-typography);
 
-$rayda-system-primary: mat-palette($mat-orange,800);
+$rayda-system-primary: mat-palette($mat-blue,800);
 $rayda-system-accent: mat-palette($mat-grey, 700);
 $rayda-system-warn: mat-palette($mat-grey,900);
 
 $rayda-system-theme: mat-light-theme($rayda-system-primary, $rayda-system-accent, $rayda-system-warn);
 
 @include angular-material-theme($rayda-system-theme);
+
+
+
+

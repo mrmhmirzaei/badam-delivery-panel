@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
+
 
 /**
  * Routes
@@ -27,6 +29,8 @@ import { FreeFoodComponent } from './dialogs/free-food/free-food.component';
 import { FreeFoodStudentComponent } from './dialogs/free-food-student/free-food-student.component';
 import { CardDefinitionComponent } from './dialogs/card-definition/card-definition.component';
 import { PenaltyComponent } from './dialogs/penalty/penalty.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const routes:Routes = [
   { path: '', component: HomeComponent },
@@ -51,7 +55,9 @@ const routes:Routes = [
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule, ReactiveFormsModule,
-    RouterModule.forRoot(routes, { enableTracing: true })
+    HttpModule,
+    RouterModule.forRoot(routes, { enableTracing: true }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [
     FreeFoodComponent,

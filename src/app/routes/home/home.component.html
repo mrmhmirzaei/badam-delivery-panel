@@ -3,19 +3,17 @@
         <button *ngIf="search == false && mini == true" mat-icon-button style="margin-left: 10px;" (click)="opened = !opened">
             <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"/></svg>
         </button>
-        <span *ngIf="mini == false">اتوماسیون تغذیه بادام</span>
-        <span *ngIf="search == false && mini == true">اتوماسیون تغذیه بادام</span>
+        <span *ngIf="mini == false">نرم افزار تحویل غذای بادام</span>
+        <span *ngIf="search == false && mini == true">نرم افزار تحویل غذای بادام</span>
         <div *ngIf="mini == false" class="spacer"></div>
-        <app-search (onSelect)="onStudentSelect($event)" *ngIf="mini == false"></app-search>
         <div *ngIf="mini == false" class="spacer"></div>
         <div *ngIf="search == false && mini == true" class="spacer"></div>
-        <app-search (onSelect)="onStudentSelect($event)" *ngIf="search == true && mini == true"></app-search>
         <button *ngIf="mini == true" mat-icon-button (click)="search = !search">
             <svg *ngIf="search == false" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M31 28h-1.59l-.55-.55C30.82 25.18 32 22.23 32 19c0-7.18-5.82-13-13-13S6 11.82 6 19s5.82 13 13 13c3.23 0 6.18-1.18 8.45-3.13l.55.55V31l10 9.98L40.98 38 31 28zm-12 0c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/></svg>
             <svg *ngIf="search == true" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"/></svg>
         </button>
         <mat-menu #appMenu="matMenu">
-            <button mat-menu-item>خروج از حساب</button>
+            <button mat-menu-item (click)="exit()">خروج از حساب</button>
         </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="appMenu"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48"><path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg></button>
     </mat-toolbar>
@@ -25,9 +23,13 @@
         </mat-sidenav>
         <mat-sidenav-content [formGroup]="options">
             <div class="background"></div>
+
             <div class="body">
+                <app-search (onSelect)="onStudentSelective($event)" *ngIf="udata" [udata]="udata"></app-search>
+
                 <div class="card" >
-                    <p *ngIf="!SelectedStudent.uid">در انتظار دریافت کارت </p>
+                  <h5>پیام روز : {{msgTxt}}</h5>
+                    <p *ngIf="!SelectedStudent.uid">در انتظار دریافت اطلاعات </p>
                     <div class="content" *ngIf="SelectedStudent.uid">
                         <img src="/assets/user.png" width="250" height="250" alt="تصویر دانشجو">
                         <div class="info" *ngIf="SelectedStudent.uid">
@@ -36,15 +38,18 @@
                             <div  *ngIf="SelectedStudent['foods'].length == 0">
                                 <h3>این کاربر غذا ندارد!</h3>
                             </div>
-                            <div *ngIf="SelectedStudent['foods'].length != 0">
-                                <p><b>غذا</b> :‌ <span><mat-chip-list><mat-chip *ngFor="let food of SelectedStudent['foods']">{{food}}</mat-chip></mat-chip-list></span></p>
-                                <p><b>نوشیدنی</b> : <span *ngIf="SelectedStudent['drinkings'].length == 0">ندارد</span><span *ngIf="SelectedStudent['drinkings'].length != 0"><mat-chip-list><mat-chip *ngFor="let drink of SelectedStudent['drinkings']">{{drink}}</mat-chip></mat-chip-list></span></p>
-                                <p><b>مخلفات</b> : <span *ngIf="SelectedStudent['optionals'].length == 0">ندارد</span><span *ngIf="SelectedStudent['optionals'].length != 0"><mat-chip-list><mat-chip *ngFor="let optional of SelectedStudent['optionals']">{{optional}}</mat-chip></mat-chip-list></span></p>
+                            <div *ngIf="SelectedStudent['foods'].length != 0 && delivered">
+                                <h4>موارد رزرو شده</h4>
+
+                              <span><mat-chip-list><mat-chip *ngFor="let food of SelectedStudent['foods']">{{food}}</mat-chip></mat-chip-list></span>
+                                <span *ngIf="SelectedStudent['drinkings'].length != 0"><mat-chip-list><mat-chip *ngFor="let drink of SelectedStudent['drinkings']">{{drink}}</mat-chip></mat-chip-list></span>
+                                 <span *ngIf="SelectedStudent['optionals'].length != 0"><mat-chip-list><mat-chip *ngFor="let optional of SelectedStudent['optionals']">{{optional}}</mat-chip></mat-chip-list></span>
                             </div>
+                            <h4>{{message}}</h4>
                         </div>
                     </div>
                     <div class="footer" *ngIf="SelectedStudent.uid">
-                        <p><b>وضعیت کارت</b> : <span>ندارد </span></p>
+                        <p><b>وضعیت کارت</b> : <span>... </span></p>
                         <div class="spacer"></div>
                         <button mat-button (click)="cardDefinition()">تعریف کارت</button>
                         <button mat-button (click)="penaltyUser()">جریمه</button>

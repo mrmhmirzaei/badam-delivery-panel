@@ -8,14 +8,17 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class TableComponent implements OnInit {
 
-  @Input() data:Object[] = [];
-  public dataSource = new MatTableDataSource<Object>();
-  public Columns:String[] = ['name', 'code', 'food', 'drink', 'optional'];
+  @Input() data: object[] = [];
+  public dataSource = new MatTableDataSource<object>();
+  public Columns: string[] = ['name', 'code', 'food', 'drink', 'optional'];
   constructor() { }
 
   ngOnInit() {
-    setInterval(()=>{
+    setInterval(() => {
+
       this.dataSource.data = this.data;
-    }, 1000)
+    }, 50);
   }
+
+
 }

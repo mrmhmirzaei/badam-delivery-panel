@@ -4,6 +4,8 @@ import {MatDialog} from '@angular/material';
 import { FreeFoodComponent } from '../../dialogs/free-food/free-food.component';
 import { FreeFoodStudentComponent } from '../../dialogs/free-food-student/free-food-student.component';
 
+import {SocketService} from '../../services/global/socket.service';
+
 interface User {
 
   name: string;
@@ -18,16 +20,67 @@ interface User {
 
 export class SidenavComponent implements OnInit {
   public chart: any;
+  public meal = null;
   public foods: User[] = [
     {
       name: 'غذای اصلی',
-      all: 456,
+      all: 0,
       deliveried: 0
     }
   ];
-  constructor(private dialog: MatDialog) { }
+  meals = [
+    {
+        name : 'ناهار',
+        id : 1,
+        enabled : true
+    },
+    {
+      name : 'شام',
+      id : 2,
+      enabled : true
+    },
+    {
+      name : 'صبحانه',
+      id : 3,
+      enabled : false
+    },
+    {
+      name : 'سحری',
+      id : 4,
+      enabled : false
+    },
+    {
+      name : 'افطاری',
+      id : 5,
+      enabled : false
+    },
+    ];
+  constructor(private dialog: MatDialog, private socket: SocketService) { }
 
   ngOnInit() {
+    if (localStorage.token) {
+
+      this.socket.socket.on('deliverstats', (data) => {
+        console.log(data);
+        this.foods[0].all = Number(data.all);
+        this.foods[0].deliveried = Number(data.delivered);
+        this.chart.data.datasets[1].data[0] = this.foods[0].all;
+        this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
+
+        this.chart.update();
+
+      });
+
+      this.socket.socket.on('delivered', (data) => {
+        if (data.delivered) {
+         this.foods[0].deliveried = this.foods[0].deliveried + 1;
+         this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
+
+         this.chart.update();
+         }
+      });
+
+    }
     this.loadChart();
     // setInterval(() => {
     //    this.foods.forEach((food, i) => {
@@ -81,4 +134,10 @@ export class SidenavComponent implements OnInit {
       console.log(result);
     });
   }
+
+  change() {
+    this.socket.socket.emit('Selectmeal', this.meal);
+    localStorage.removeItem(`studentData_`);
+  }
+
 }

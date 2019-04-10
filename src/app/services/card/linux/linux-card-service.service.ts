@@ -37,7 +37,7 @@ export class LinuxCardServiceService {
         data = data.replace(this.newCardPerfix, '');
         data = data.slice(0, -2);
       }
-      callback(data);
+      callback(data.toUpperCase());
     });
   }
 

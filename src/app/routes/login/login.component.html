@@ -14,8 +14,10 @@
         <input matInput type="password" name="password" [(ngModel)]="password">
       </mat-form-field>
       <div class="buttons">
-        <h4>{{msg}}</h4>
-        <button mat-stroked-button color="primary" (click)="login()">ورود</button>
+        <button mat-stroked-button color="primary" (click)="login()" [disabled]="logining == true">
+          <span *ngIf="logining == false">ورود</span>
+          <mat-spinner *ngIf="logining == true" style="margin: 5px;" diameter="20"></mat-spinner>
+        </button>
       </div>
     </div>
   </div>

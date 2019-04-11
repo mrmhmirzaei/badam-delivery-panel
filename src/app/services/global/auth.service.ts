@@ -13,20 +13,20 @@ export class AuthService {
   private messageSource = new BehaviorSubject('hello');
   currentMessage = this.messageSource.asObservable();
   changeMessage(message: string) {
-   this.messageSource.next('hi');
- }
+    this.messageSource.next('hi');
+  }
   login(data) {
     return this.http.post(environment.UserApi + 'login', data).toPromise()
-    .then((d) => {
-       if (d.json().status) {
-         this.changeMessage('logged');
-         localStorage.setItem('token', d.json().token);
-         localStorage.setItem('uid', data.username);
+      .then((d) => {
+        if (d.json().status) {
+          this.changeMessage('logged');
+          localStorage.setItem('token', d.json().token);
+          localStorage.setItem('uid', data.username);
 
-       }
-       return d.json().status;
+        }
+        return d.json().status;
 
-    });
+      });
   }
   async checkLevel() {
     const headers = new Headers();
@@ -35,19 +35,19 @@ export class AuthService {
       const ok = await this.http.get('https://levelc.rayda.ir/' + 'level', {
         headers
       })
-      .toPromise();
+        .toPromise();
 
 
 
       return ok.json().level;
     } catch (error) {
-      console.log('check level :'  + error);
+      console.log('check level :' + error);
     }
     return false;
 
   }
 
-IsLoggedIn() {
-  return localStorage.token ? true : false;
-}
+  IsLoggedIn() {
+    return localStorage.token ? true : false;
+  }
 }

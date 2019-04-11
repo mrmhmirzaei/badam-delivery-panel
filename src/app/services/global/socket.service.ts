@@ -8,12 +8,12 @@ export class SocketService {
   public socket: SocketIOClient.Socket;
   private connected = false;
   constructor() {
-     this.ConnectToserver();
+    this.ConnectToserver();
 
-     this.socket.on('disconnect', () => {
-       console.log('diss...');
-       this.connected = false;
-     });
+    this.socket.on('disconnect', () => {
+      console.log('diss...');
+      this.connected = false;
+    });
   }
 
   public connect() {
@@ -29,13 +29,13 @@ export class SocketService {
   private ConnectToserver() {
     if (!this.connected) {
       this.socket = io.connect('https://deliver.rayda.ir/',
-      {
-      query: 'token=' + localStorage.token
-      });
+        {
+          query: 'token=' + localStorage.token
+        });
 
       this.socket.on('connect', () => {
         this.connected = true;
       });
-      }
+    }
   }
 }

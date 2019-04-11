@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import {
-   Router,
+  Router,
 
 } from '@angular/router';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar, MatDialog, MatBottomSheet} from '@angular/material';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar, MatDialog, MatBottomSheet } from '@angular/material';
 import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
 import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
-import {LinuxCardServiceService} from '../../services/card/linux/linux-card-service.service';
-import {SocketService} from '../../services/global/socket.service';
+import { LinuxCardServiceService } from '../../services/card/linux/linux-card-service.service';
+import { SocketService } from '../../services/global/socket.service';
 import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
 interface User {
@@ -36,14 +36,14 @@ export class HomeComponent implements OnInit {
   public mini = false;
   public online = false;
   public linestatus = false;
-  public msgTxt:String = '';
+  public msgTxt: String = '';
   public delivered = true;
   public SelectedStudent: User = {
     cardId: null,
     uid: null,
     firstname: null,
-    lastname : null,
-    emnumber : null,
+    lastname: null,
+    emnumber: null,
     foods: [],
     drinkings: [],
     optionals: []
@@ -80,8 +80,8 @@ export class HomeComponent implements OnInit {
           cardId: null,
           uid: null,
           firstname: null,
-          lastname : null,
-          emnumber : null,
+          lastname: null,
+          emnumber: null,
           foods: [],
           drinkings: [],
           optionals: []
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
           }
         });
         this.SelectedStudent = {
-          cardId : elm.uid,
+          cardId: elm.uid,
           uid: elm.uid,
           firstname: elm.name,
           lastname: elm.family,
@@ -108,19 +108,19 @@ export class HomeComponent implements OnInit {
         };
         if (!data.uid) {
           this.snackbar.open(data.message, 'بستن', {
-            duration : 1000,
+            duration: 1000,
           });
         }
 
         if (data.delivered) {
           this.delivered = true;
           this.playAudio('finish.ogg');
-         } else {
+        } else {
           this.delivered = false;
           this.playAudio('error.ogg');
         }
 
-        this.message = data.message;
+        this.message = data.message || null;
       });
       this.socket.socket.on('reserveds', (data) => {
         if (localStorage.getItem('studentData_')) {
@@ -138,10 +138,10 @@ export class HomeComponent implements OnInit {
         this.addToTable();
       }
       this.socket.socket.emit('deliver', {
-        card : true,
-        meal : 2,
-        place : '',
-        uid : data,
+        card: true,
+        meal: 2,
+        place: '',
+        uid: data,
       });
     });
   }
@@ -188,10 +188,10 @@ export class HomeComponent implements OnInit {
 
     if (data != null) {
       this.socket.socket.emit('deliver', {
-        card : false,
-        meal : 2,
-        place : '',
-        uid : data.uid,
+        card: false,
+        meal: 2,
+        place: '',
+        uid: data.uid,
       });
       // this.SelectedStudent = data;
     }
@@ -223,8 +223,8 @@ export class HomeComponent implements OnInit {
       cardId: null,
       uid: null,
       firstname: null,
-      lastname : null,
-      emnumber : null,
+      lastname: null,
+      emnumber: null,
       foods: [],
       drinkings: [],
       optionals: []
@@ -239,7 +239,7 @@ export class HomeComponent implements OnInit {
 
   playAudio(n) {
     const audio = new Audio();
-    audio.src =  '/assets/' + n;
+    audio.src = '/assets/' + n;
     audio.load();
     audio.play();
   }

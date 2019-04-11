@@ -40,6 +40,22 @@ div.body{
     margin-top: 140px;
 }
 
+div.message{
+    background-color: #fff;
+    padding: 0 10px;
+    border-radius: .3rem;
+    margin-top: 65px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+div.message h4{
+    margin: 0;
+}
+
+div.message + div.card{
+    margin-top: 20px !important;
+}
+
 div.card{
     background-color: #fff;
     padding: 20px;

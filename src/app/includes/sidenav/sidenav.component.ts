@@ -64,8 +64,8 @@ export class SidenavComponent implements OnInit {
         console.log(data);
         this.foods[0].all = Number(data.all);
         this.foods[0].deliveried = Number(data.delivered);
-        this.chart.data.datasets[1].data[0] = this.foods[0].all;
-        this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
+        this.chart.data.datasets[0].data[0] = this.foods[0].all;
+        this.chart.data.datasets[1].data[0] = this.foods[0].deliveried;
 
         this.chart.update();
 

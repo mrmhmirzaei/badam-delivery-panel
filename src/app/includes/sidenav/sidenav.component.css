@@ -14,7 +14,7 @@ div.items{
 }
 
 div.items{
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 100px;
 }
 
@@ -27,6 +27,11 @@ div.items div.item{
     margin-bottom: 20px;
     display: flex;
     flex-wrap: nowrap;
+}
+
+div.items div.item mat-form-field{
+    width: 100%;
+    margin: 0 20px;
 }
 
 div.items div.item button{

@@ -1,29 +1,32 @@
 <div class="content">
   <canvas id="canvas"></canvas>
-    <div class="items">
-
-      <div class="item">
-          <mat-form-field >
-              <mat-label>انتخاب وعده</mat-label>
-              <mat-select [(ngModel)]="meal" (selectionChange)="change()">
-                <mat-option *ngFor="let m of meals" [value]="m.id">
-                  {{m.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-      </div>
-        <div class="item" *ngFor="let food of foods; let i = index; let index = index">
-            <div class="content">
-                <h4>{{food['name']}}</h4><br>
-                <p><span>آمار کل</span> : <span>{{food['all']}}</span></p>
-                <p><span>تحویل داده شده</span> : <span>{{food['deliveried']}}</span></p>
-                <p><span>باقی مانده</span> : <span>{{food['all'] - food['deliveried']}}</span></p>
-            </div>
-            <button mat-icon-button [matMenuTriggerFor]="i"><svg xmlns="http://www.w3.org/2000/svg" fill="#000" viewBox="0 0 48 48"><path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg></button>
-            <mat-menu #i="matMenu">
-                <button mat-menu-item (click)="freeFoodStudent(index)">تحویل غذا آزاد</button>
-                <button mat-menu-item (click)="freeFood(index)">آزاد کردن غذا</button>
-            </mat-menu>
-        </div>
+  <div class="items">
+    <div class="item">
+      <mat-form-field>
+        <mat-label>انتخاب وعده</mat-label>
+        <mat-select [(ngModel)]="meal" (selectionChange)="change()">
+          <mat-option *ngFor="let m of meals" [value]="m.id">
+            {{m.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
+    <div class="item" *ngFor="let food of foods; let i = index; let index = index">
+      <div class="content">
+        <h4>{{food['name']}}</h4><br>
+        <p><span>آمار کل</span> : <span>{{food['all']}}</span></p>
+        <p><span>تحویل داده شده</span> : <span>{{food['deliveried']}}</span></p>
+        <p><span>باقی مانده</span> : <span>{{food['all'] - food['deliveried']}}</span></p>
+      </div>
+      <button mat-icon-button [matMenuTriggerFor]="i"><svg xmlns="http://www.w3.org/2000/svg" fill="#000"
+          viewBox="0 0 48 48">
+          <path
+            d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" />
+          </svg></button>
+      <mat-menu #i="matMenu">
+        <button mat-menu-item (click)="freeFoodStudent(index)">تحویل غذا آزاد</button>
+        <button mat-menu-item (click)="freeFood(index)">آزاد کردن غذا</button>
+      </mat-menu>
+    </div>
+  </div>
 </div>

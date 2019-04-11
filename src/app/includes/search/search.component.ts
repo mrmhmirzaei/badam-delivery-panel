@@ -36,31 +36,31 @@ export class SearchComponent implements OnInit {
   filteredOptions: Observable<object[]>;
   meals = [
     {
-        name : 'ناهار',
-        id : 1,
-        enabled : true
+      name: 'ناهار',
+      id: 1,
+      enabled: true
     },
     {
-      name : 'شام',
-      id : 2,
-      enabled : true
+      name: 'شام',
+      id: 2,
+      enabled: true
     },
     {
-      name : 'صبحانه',
-      id : 3,
-      enabled : false
+      name: 'صبحانه',
+      id: 3,
+      enabled: false
     },
     {
-      name : 'سحری',
-      id : 4,
-      enabled : false
+      name: 'سحری',
+      id: 4,
+      enabled: false
     },
     {
-      name : 'افطاری',
-      id : 5,
-      enabled : false
+      name: 'افطاری',
+      id: 5,
+      enabled: false
     },
-    ];
+  ];
 
   ngOnInit() {
 
@@ -75,7 +75,7 @@ export class SearchComponent implements OnInit {
 
     u.forEach(element => {
       this.options.push({
-        cardId : element.uid,
+        cardId: element.uid,
         uid: element.uid,
         firstname: element.name,
         lastname: element.family,

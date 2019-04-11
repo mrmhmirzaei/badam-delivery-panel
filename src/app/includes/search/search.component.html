@@ -1,10 +1,8 @@
-<mat-form-field style="width:100%; " *ngIf="this.options.length > 0"  appearance="outline">
-  <mat-label>ورود کد ملی</mat-label>
-    <input type="text"  aria-label="Number" matInput [formControl]="myControl"
-      [matAutocomplete]="auto"  >
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='select($event.option.value)' [displayWith]="displayFn">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
-        {{option['firstname']}}  {{option['lastname']}} | {{option['uid']}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+<div class="container" *ngIf="options.length != 0">
+  <input placeholder="کد ملی" type="text" aria-label="Number" [formControl]="myControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)='select($event.option.value)' [displayWith]="displayFn">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option['firstname']}} {{option['lastname']}} | {{option['uid']}}
+    </mat-option>
+  </mat-autocomplete>
+<div>

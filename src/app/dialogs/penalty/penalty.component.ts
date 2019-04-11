@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material';
 
 @Component({
@@ -8,6 +8,7 @@ import { MatBottomSheetRef } from '@angular/material';
 })
 export class PenaltyComponent implements OnInit {
 
+  @Input() price:String = '0';
   constructor(private dialogRef: MatBottomSheetRef<PenaltyComponent>) { }
 
   ngOnInit() {

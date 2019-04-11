@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { FreeFoodComponent } from '../../dialogs/free-food/free-food.component';
 import { FreeFoodStudentComponent } from '../../dialogs/free-food-student/free-food-student.component';
 
-import {SocketService} from '../../services/global/socket.service';
+import { SocketService } from '../../services/global/socket.service';
 
 interface User {
 
@@ -30,31 +30,31 @@ export class SidenavComponent implements OnInit {
   ];
   meals = [
     {
-        name : 'ناهار',
-        id : 1,
-        enabled : true
+      name: 'ناهار',
+      id: 1,
+      enabled: true
     },
     {
-      name : 'شام',
-      id : 2,
-      enabled : true
+      name: 'شام',
+      id: 2,
+      enabled: true
     },
     {
-      name : 'صبحانه',
-      id : 3,
-      enabled : false
+      name: 'صبحانه',
+      id: 3,
+      enabled: false
     },
     {
-      name : 'سحری',
-      id : 4,
-      enabled : false
+      name: 'سحری',
+      id: 4,
+      enabled: false
     },
     {
-      name : 'افطاری',
-      id : 5,
-      enabled : false
+      name: 'افطاری',
+      id: 5,
+      enabled: false
     },
-    ];
+  ];
   constructor(private dialog: MatDialog, private socket: SocketService) { }
 
   ngOnInit() {
@@ -73,66 +73,59 @@ export class SidenavComponent implements OnInit {
 
       this.socket.socket.on('delivered', (data) => {
         if (data.delivered) {
-         this.foods[0].deliveried = this.foods[0].deliveried + 1;
-         this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
+          this.foods[0].deliveried = this.foods[0].deliveried + 1;
+          this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
 
-         this.chart.update();
-         }
+          this.chart.update();
+        }
       });
 
     }
     this.loadChart();
-    // setInterval(() => {
-    //    this.foods.forEach((food, i) => {
-    //      food.all = food.all + 1;
-    //      this.chart.data.datasets[1].data[i] = food.all;
-    //    });
-    //    this.chart.update();
-    // }, 3000);
-    // setInterval(() => {
-    //    this.foods.forEach((food, i) => {
-    //      food.deliveried = food.deliveried + 1;
-    //      this.chart.data.datasets[2].data[i] = food.deliveried;
-    //    });
-    //    this.chart.update();
-    //  }, 7000);
   }
 
   loadChart() {
-    function createArray(length= 0, value= null) {
+    function createArray(length = 0, value = null) {
       return Array.from(Array(length), () => value);
     }
 
     const labels = this.foods.map(food => food.name);
-    const all = { label: 'آمار کل', data: this.foods.map(food => food.all), backgroundColor: createArray(labels.length, '#3f51b5')};
+    const all = { label: 'آمار کل', data: this.foods.map(food => food.all), backgroundColor: createArray(labels.length, '#3f51b5') };
     // tslint:disable-next-line:max-line-length
-    const deliveried = { label: 'آمار تحویل', data: this.foods.map(food => food.deliveried), backgroundColor: createArray(labels.length, '#e91e63')};
+    const deliveried = { label: 'آمار تحویل', data: this.foods.map(food => food.deliveried), backgroundColor: createArray(labels.length, '#e91e63') };
     this.chart = new Chart((document.getElementById('canvas') as HTMLCanvasElement).getContext('2d'), {
       type: 'bar',
       data: {
         labels,
-        datasets: [{label: '', data: [0]}, all, deliveried]
+        datasets: [all, deliveried]
       },
       options: {
         tooltips: {
           enabled: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
         }
       }
     });
   }
 
   freeFood(index) {
-    this.dialog.open(FreeFoodComponent, { data: { max : this.foods[index].all - this.foods[index].deliveried } })
-    .afterClosed().subscribe(result => {
-      console.log(result);
-    });
+    this.dialog.open(FreeFoodComponent, { data: { max: this.foods[index].all - this.foods[index].deliveried } })
+      .afterClosed().subscribe(result => {
+        console.log(result);
+      });
   }
 
   freeFoodStudent(index) {
     this.dialog.open(FreeFoodStudentComponent)
-    .afterClosed().subscribe(result => {
-      console.log(result);
-    });
+      .afterClosed().subscribe(result => {
+        console.log(result);
+      });
   }
 
   change() {

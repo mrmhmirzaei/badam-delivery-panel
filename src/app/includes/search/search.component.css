@@ -1,7 +1,31 @@
-mat-label {
-  color: white;
+div.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-input {
-  color: white;
 
+input {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: .2rem;
+  border: none;
+  min-width: 300px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transition: all .3s;
+}
+
+input:focus, input:not(:placeholder-shown) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  min-width: 325px;
+  transition: all .3s;
+}
+
+@media only screen and (max-width: 600px) {
+  input {
+    min-width: 60vw;
+  }
+  input:focus, input:not(:placeholder-shown) {
+    min-width: calc(60vw + 25px);
+  }
 }

@@ -36,8 +36,7 @@ export class HomeComponent implements OnInit {
   public mini = false;
   public online = false;
   public linestatus = false;
-  public search = false;
-  public msgTxt = '';
+  public msgTxt:String = '';
   public delivered = true;
   public SelectedStudent: User = {
     cardId: null,
@@ -71,7 +70,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     if (!localStorage.token) {
-
       this.router.navigate(['/login']);
     } else {
       this.socket.socket = this.socket.connect();

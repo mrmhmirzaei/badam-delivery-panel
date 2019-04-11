@@ -8,6 +8,7 @@ import {MatDialogRef} from '@angular/material';
 })
 export class FreeFoodStudentComponent implements OnInit {
 
+  public done:Boolean = false;
   constructor(public dialogRef: MatDialogRef<FreeFoodStudentComponent>) { }
 
   ngOnInit() {

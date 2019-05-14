@@ -26,7 +26,7 @@ interface User {
   foods: string[];
   drinkings: string[];
   optionals: string[];
-  description : string;
+  description: string;
 
 }
 @Component({
@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit {
 
 
       this.socket.socket.on('delivered', (data: { uid: any; message: string; delivered: any; }) => {
-        this.userDeliveredList = []
+        this.userDeliveredList = [];
         if (!data.uid) {
 
           this.SelectedStudent = {
@@ -185,8 +185,8 @@ export class HomeComponent implements OnInit {
 
         this.SelectedStudent.description = this.message;
 
-        const Tosend:any = this.SelectedStudent;
-        Tosend.isOk = this.delivered
+        const Tosend: any = this.SelectedStudent;
+        Tosend.isOk = this.delivered;
         this.userDeliveredList.push(Tosend);
       });
       this.socket.socket.on('reserveds', (data: any) => {

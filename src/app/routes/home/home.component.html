@@ -33,8 +33,8 @@
                         <img [hidden]="!disimg"  src="https://5bf3c8b2b293ba0012ce1945.storage.liara.ir/avatars/{{SelectedStudent.uid}}.png" width="250" height="250" alt="تصویر دانشجو">
 
                         <div class="info" *ngIf="SelectedStudent.uid">
-                            
-                                                                 <app-table *ngIf="studentData.length != 0" [data]="userDeliveredList" style="width : 100%"></app-table>
+
+                                                                 <app-table [data]="userDeliveredList" style="width : 100%"></app-table>
 
                     <!-- <div *ngIf="SelectedStudent['foods'].length != 0 && delivered">
                                 <span>

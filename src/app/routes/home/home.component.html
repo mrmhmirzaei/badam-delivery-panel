@@ -31,13 +31,12 @@
                     <p style="text-align: center" *ngIf="!SelectedStudent.uid">در انتظار دریافت اطلاعات </p>
                     <div class="content" *ngIf="SelectedStudent.uid">
                         <img [hidden]="!disimg"  src="https://5bf3c8b2b293ba0012ce1945.storage.liara.ir/avatars/{{SelectedStudent.uid}}.png" width="250" height="250" alt="تصویر دانشجو">
+
                         <div class="info" *ngIf="SelectedStudent.uid">
-                            <h4>{{SelectedStudent.firstname}} {{SelectedStudent.lastname}} </h4>
-                            <span>{{SelectedStudent.uid}}</span><br><br>
-                            <div *ngIf="SelectedStudent['foods'].length == 0">
-                                <h3>این کاربر غذا ندارد!</h3>
-                            </div>
-                            <div *ngIf="SelectedStudent['foods'].length != 0 && delivered">
+                            
+                                                                 <app-table *ngIf="studentData.length != 0" [data]="userDeliveredList" style="width : 100%"></app-table>
+
+                    <!-- <div *ngIf="SelectedStudent['foods'].length != 0 && delivered">
                                 <span>
                                     <mat-chip-list>
                                         <mat-chip *ngFor="let food of SelectedStudent['foods']">{{food}}</mat-chip>
@@ -56,9 +55,11 @@
                                     </mat-chip-list>
                                 </span>
                             </div>
-                            <h3 *ngIf="message" style="float:left">{{message}}</h3>
+                            -->
+
                         </div>
                     </div>
+                    <br>
                     <div class="footer" *ngIf="SelectedStudent.uid">
                         <p><b>وضعیت کارت</b> : <span *ngIf="SelectedStudent.card">کارت کاربر فعال است</span><span *ngIf="!SelectedStudent.card">کاربر کارت ندارد</span></p>
                         <div class="spacer"></div>

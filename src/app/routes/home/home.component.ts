@@ -26,6 +26,7 @@ interface User {
   foods: string[];
   drinkings: string[];
   optionals: string[];
+  description : string;
 
 }
 @Component({
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
   public msgTxt = '';
   public delivered = true;
   public deliveredList = [];
+  public userDeliveredList = [];
   public SelectedStudent: User = {
     cardId: null,
     card : null,
@@ -53,7 +55,8 @@ export class HomeComponent implements OnInit {
     emnumber: null,
     foods: [],
     drinkings: [],
-    optionals: []
+    optionals: [],
+    description : ''
   };
   // tslint:disable-next-line:ban-types
   public studentData: User[] = [];
@@ -97,7 +100,8 @@ export class HomeComponent implements OnInit {
           emnumber: null,
           foods: [],
           drinkings: [],
-          optionals: []
+          optionals: [],
+          description : ''
         };
       });
 
@@ -109,6 +113,7 @@ export class HomeComponent implements OnInit {
 
 
       this.socket.socket.on('delivered', (data: { uid: any; message: string; delivered: any; }) => {
+        this.userDeliveredList = []
         if (!data.uid) {
 
           this.SelectedStudent = {
@@ -120,7 +125,8 @@ export class HomeComponent implements OnInit {
             emnumber: null,
             foods: [],
             drinkings: [],
-            optionals: []
+            optionals: [],
+            description : ''
           };
           this.snackbar.open(data.message, 'بستن', {
             duration: 1000,
@@ -156,6 +162,7 @@ export class HomeComponent implements OnInit {
           foods: ['غذای اصلی'],
           drinkings: [],
           optionals: [],
+          description : ''
         };
 
 
@@ -175,6 +182,12 @@ export class HomeComponent implements OnInit {
         }
 
         this.message = data.message || null;
+
+        this.SelectedStudent.description = this.message;
+
+        const Tosend:any = this.SelectedStudent;
+        Tosend.isOk = this.delivered
+        this.userDeliveredList.push(Tosend);
       });
       this.socket.socket.on('reserveds', (data: any) => {
         this.udata = null;
@@ -274,6 +287,7 @@ export class HomeComponent implements OnInit {
         foods: ['غذای اصلی'],
         drinkings: [],
         optionals: [],
+        description : '',
       };
 
 
@@ -348,7 +362,8 @@ export class HomeComponent implements OnInit {
       emnumber: null,
       foods: [],
       drinkings: [],
-      optionals: []
+      optionals: [],
+      description : ''
     };
   }
 

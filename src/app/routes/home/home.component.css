@@ -41,7 +41,7 @@ div.body{
 }
 
 div.message{
-    background-color: #fff;
+    background-color: #fafafa;
     padding: 0 10px;
     border-radius: .3rem;
     margin-top: 65px;
@@ -57,7 +57,7 @@ div.message + div.card{
 }
 
 div.card{
-    background-color: #fff;
+    background-color: #fafafa;
     padding: 20px;
     margin-top: 45px;
     border-radius: .3rem;
@@ -65,17 +65,12 @@ div.card{
     display: flex;
     flex-direction: column;
 }
-
-div.card div.content{
-    display: flex;
-    flex-wrap: nowrap;
-}
-
 div.card img{
     width: 150px;
     height: 150px;
     margin-left: 30px;
     border-radius: 100%;
+  
 }
 
 div.card div.info h4{

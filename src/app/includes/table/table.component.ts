@@ -10,7 +10,7 @@ export class TableComponent implements OnInit {
 
   @Input() data: object[] = [];
   public dataSource = new MatTableDataSource<object>();
-  public Columns: string[] = ['name', 'code', 'food', 'drink', 'optional'];
+  public Columns: string[] = ['name', 'code', 'food', 'drink', 'optional','description'];
   constructor() { }
 
   ngOnInit() {

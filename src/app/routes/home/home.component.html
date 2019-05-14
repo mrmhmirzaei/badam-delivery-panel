@@ -1,6 +1,6 @@
 <ng-container>
     <mat-toolbar color="primary">
-        <button *ngIf="mini == true" mat-icon-button style="margin-left: 10px;" (click)="opened = !opened">
+        <button  mat-icon-button style="margin-left: 10px;" (click)="opened = !opened">
             <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 48 48">
                 <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z" /></svg>
         </button>
@@ -21,7 +21,7 @@
             <app-sidenav></app-sidenav>
         </mat-sidenav>
         <mat-sidenav-content [formGroup]="options">
-            <div class="background" [ngClass]="{'min': !udata, 'min':msgTxt.includes('تعریف نشده است') == true}"></div>
+            <div class="background" [ngClass]="{'min': !udata}"></div>
             <div class="body">
                 <app-search (onSelect)="onStudentSelective($event)" *ngIf="udata" [udata]="udata"></app-search>
                 <div class="message" *ngIf="msgTxt">
@@ -30,7 +30,7 @@
                 <div class="card" *ngIf="msgTxt.includes('تعریف نشده است') == false" [ngStyle]="{'margin-top': msgTxt.length == 0?'85px':'20px'}">
                     <p style="text-align: center" *ngIf="!SelectedStudent.uid">در انتظار دریافت اطلاعات </p>
                     <div class="content" *ngIf="SelectedStudent.uid">
-                        <img src="/assets/user.png" width="250" height="250" alt="تصویر دانشجو">
+                        <img [hidden]="!disimg"  src="https://5bf3c8b2b293ba0012ce1945.storage.liara.ir/avatars/{{SelectedStudent.uid}}.png" width="250" height="250" alt="تصویر دانشجو">
                         <div class="info" *ngIf="SelectedStudent.uid">
                             <h4>{{SelectedStudent.firstname}} {{SelectedStudent.lastname}} </h4>
                             <span>{{SelectedStudent.uid}}</span><br><br>
@@ -38,7 +38,6 @@
                                 <h3>این کاربر غذا ندارد!</h3>
                             </div>
                             <div *ngIf="SelectedStudent['foods'].length != 0 && delivered">
-                                <h5>موارد رزرو شده</h5>
                                 <span>
                                     <mat-chip-list>
                                         <mat-chip *ngFor="let food of SelectedStudent['foods']">{{food}}</mat-chip>
@@ -57,14 +56,16 @@
                                     </mat-chip-list>
                                 </span>
                             </div>
-                            <h5 style="margin-top: -20px" *ngIf="message">{{message}}</h5>
+                            <h3 *ngIf="message" style="float:left">{{message}}</h3>
                         </div>
                     </div>
                     <div class="footer" *ngIf="SelectedStudent.uid">
-                        <p><b>وضعیت کارت</b> : <span>بدون وضعیت</span></p>
+                        <p><b>وضعیت کارت</b> : <span *ngIf="SelectedStudent.card">کارت کاربر فعال است</span><span *ngIf="!SelectedStudent.card">کاربر کارت ندارد</span></p>
                         <div class="spacer"></div>
-                        <button mat-button (click)="cardDefinition()">تعریف کارت</button>
-                        <button mat-button (click)="penaltyUser()">جریمه</button>
+                        <span *ngIf="!SelectedStudent.card">
+                          <button mat-button (click)="cardDefinition()">تعریف کارت</button>
+                        </span>
+
                     </div>
                 </div>
                 <app-table *ngIf="studentData.length != 0" [data]="studentData"></app-table>

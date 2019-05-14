@@ -30,6 +30,8 @@ export class LinuxCardServiceService {
   }
   public GetCardData(callback) {
     this.socket.on('card-inserted', (data) => {
+
+      console.log(data);
       if (data.startsWith(this.classicCardPerfix)) {
          data = data.replace(this.classicCardPerfix, '');
       }

@@ -2,7 +2,13 @@
   <canvas id="canvas"></canvas>
   <div class="items">
     <div class="item">
-      <mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="هفته" [(ngModel)]="week" type="text" pattern="\d*" maxlength="2" (keyup)="change()">
+          </mat-form-field>
+    </div>
+    <div class="item">
+
+      <mat-form-field >
         <mat-label>انتخاب وعده</mat-label>
         <mat-select [(ngModel)]="meal" (selectionChange)="change()">
           <mat-option *ngFor="let m of meals" [value]="m.id">
@@ -11,12 +17,26 @@
         </mat-select>
       </mat-form-field>
     </div>
+
+    <div class="item">
+      <mat-form-field>
+        <mat-label>انتخاب روز</mat-label>
+        <mat-select [(ngModel)]="dow" (selectionChange)="change()">
+          <mat-option *ngFor="let m of days; let i = index" [value]="i">
+            {{m}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="item" *ngFor="let food of foods; let i = index; let index = index">
       <div class="content">
         <h4>{{food['name']}}</h4><br>
+         <mat-form-field>
+           <input matInput placeholder="کسر از آمار" [(ngModel)]="food.negti">
+         </mat-form-field>
         <p><span>آمار کل</span> : <span>{{food['all']}}</span></p>
         <p><span>تحویل داده شده</span> : <span>{{food['deliveried']}}</span></p>
-        <p><span>باقی مانده</span> : <span>{{food['all'] - food['deliveried']}}</span></p>
+        <p><span>باقی مانده</span> : <span>{{food['all'] - food['deliveried'] - food.negti}}</span></p>
       </div>
       <button mat-icon-button [matMenuTriggerFor]="i"><svg xmlns="http://www.w3.org/2000/svg" fill="#000"
           viewBox="0 0 48 48">

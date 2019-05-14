@@ -3,7 +3,7 @@ import * as io from 'socket.io-client';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class GbSocketService {
   public socket: SocketIOClient.Socket;
   public connected = false;
   constructor() {

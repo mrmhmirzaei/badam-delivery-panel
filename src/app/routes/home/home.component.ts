@@ -9,12 +9,17 @@ import { MatSnackBar, MatDialog, MatBottomSheet } from '@angular/material';
 import { CardDefinitionComponent } from '../../dialogs/card-definition/card-definition.component';
 import { PenaltyComponent } from '../../dialogs/penalty/penalty.component';
 import { LinuxCardServiceService } from '../../services/card/linux/linux-card-service.service';
+import { WindowCardServiceService } from '../../services/card/windows/window-card-service.service';
 import { SocketService } from '../../services/global/socket.service';
-import { jsonpCallbackContext } from '@angular/common/http/src/module';
+import { GbSocketService } from '../../services/global/gbsocket.service';
+import * as moment from 'jalali-moment';
+
+
 
 interface User {
   cardId: number;
   uid: number;
+  card: string;
   firstname: string;
   lastname: string;
   emnumber: number;
@@ -26,7 +31,7 @@ interface User {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  providers: [LinuxCardServiceService, SocketService],
+  providers: [LinuxCardServiceService, SocketService, GbSocketService],
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
@@ -36,10 +41,12 @@ export class HomeComponent implements OnInit {
   public mini = false;
   public online = false;
   public linestatus = false;
-  public msgTxt: String = '';
+  public msgTxt = '';
   public delivered = true;
+  public deliveredList = [];
   public SelectedStudent: User = {
     cardId: null,
+    card : null,
     uid: null,
     firstname: null,
     lastname: null,
@@ -51,6 +58,7 @@ export class HomeComponent implements OnInit {
   // tslint:disable-next-line:ban-types
   public studentData: User[] = [];
   public udata = null;
+  public disimg = false;
   public message = '';
   constructor(
     fb: FormBuilder,
@@ -60,6 +68,8 @@ export class HomeComponent implements OnInit {
     private bottomSheet: MatBottomSheet,
     private router: Router,
     private socket: SocketService,
+    private gbsocket: GbSocketService,
+    private windowsCard: WindowCardServiceService,
     private linuxCard: LinuxCardServiceService) {
     this.options = fb.group({
       top: 0,
@@ -68,16 +78,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (!localStorage.token) {
       this.router.navigate(['/login']);
     } else {
-      this.socket.socket = this.socket.connect();
-      this.socket.socket.on('delivermsg', (data) => {
+      this.gbsocket.socket = this.gbsocket.connect('https://message.rayda.ir/');
+      this.socket.socket = this.socket.connect('https://deliver.rayda.ir/');
+
+      this.socket.socket.on('delivermsg', (data: { message: string; }) => {
         this.msgTxt = data.message;
         this.studentData = [];
         this.SelectedStudent = {
           cardId: null,
+          card : null,
           uid: null,
           firstname: null,
           lastname: null,
@@ -88,17 +101,55 @@ export class HomeComponent implements OnInit {
         };
       });
 
-      this.socket.socket.on('delivered', (data) => {
+      this.gbsocket.socket.on('news', (data: { message: string; }) => {
+        this.snackbar.open(data.message, 'بستن', {
+          duration: 1000,
+        });
+      });
+
+
+      this.socket.socket.on('delivered', (data: { uid: any; message: string; delivered: any; }) => {
+        if (!data.uid) {
+
+          this.SelectedStudent = {
+            cardId: null,
+            card: null,
+            uid: null,
+            firstname: null,
+            lastname: null,
+            emnumber: null,
+            foods: [],
+            drinkings: [],
+            optionals: []
+          };
+          this.snackbar.open(data.message, 'بستن', {
+            duration: 1000,
+          });
+          this.playAudio('error.ogg');
+          return;
+        }
         // tslint:disable-next-line:prefer-for-of
-        const elm = this.udata.find((option) => {
+        const elm = this.udata.find((option: { uid: { toString: () => void; }; }) => {
 
           if (option.uid.toString() === data.uid) {
             return true;
           }
         });
+
+        if (!elm) {
+          this.snackbar.open('کاربر هیچ گونه رزروی ندارد', 'بستن', {
+            duration: 1000,
+          });
+
+          this.playAudio('error.ogg');
+          return;
+
+        }
+        this.disimg = false;
         this.SelectedStudent = {
           cardId: elm.uid,
           uid: elm.uid,
+          card : elm.card,
           firstname: elm.name,
           lastname: elm.family,
           emnumber: elm.uid,
@@ -106,15 +157,18 @@ export class HomeComponent implements OnInit {
           drinkings: [],
           optionals: [],
         };
-        if (!data.uid) {
-          this.snackbar.open(data.message, 'بستن', {
-            duration: 1000,
-          });
-        }
 
+
+        setTimeout(() => {
+          this.disimg = true;
+        }, 50);
         if (data.delivered) {
           this.delivered = true;
           this.playAudio('finish.ogg');
+          const add: any = this.SelectedStudent;
+          add.time = moment().format('jYYYY/jMM/jDD hh:mm:ss');
+          this.deliveredList.push(add);
+          localStorage.offlineDeliver =  JSON.stringify(this.deliveredList);
         } else {
           this.delivered = false;
           this.playAudio('error.ogg');
@@ -122,28 +176,51 @@ export class HomeComponent implements OnInit {
 
         this.message = data.message || null;
       });
-      this.socket.socket.on('reserveds', (data) => {
+      this.socket.socket.on('reserveds', (data: any) => {
+        this.udata = null;
         if (localStorage.getItem('studentData_')) {
 
           this.studentData = JSON.parse(localStorage.getItem('studentData_'));
         }
+
         this.udata = data;
       });
     }
     this.sidenavEvent();
     this.OnlineEvent();
-    this.linuxCard.connect();
-    this.linuxCard.GetCardData((data) => {
-      if (this.SelectedStudent.uid != null) {
-        this.addToTable();
-      }
-      this.socket.socket.emit('deliver', {
-        card: true,
-        meal: 2,
-        place: '',
-        uid: data,
+    let OSName = 'Unknown OS';
+    if (navigator.appVersion.indexOf('Win') !== -1) { OSName = 'Windows'; }
+    if (navigator.appVersion.indexOf('Mac') !== -1) { OSName = 'MacOS'; }
+    if (navigator.appVersion.indexOf('X11') !== -1) { OSName = 'UNIX'; }
+    if (navigator.appVersion.indexOf('Linux') !== -1) { OSName = 'Linux'; }
+
+
+    if (OSName === 'Linux') {
+      this.linuxCard.connect();
+      this.linuxCard.GetCardData((data: any) => {
+        this.socket.socket.emit('deliver', {
+          card: true,
+          meal: 2,
+          place: '',
+          uid: data,
+        });
       });
-    });
+    } else if (OSName === 'Windows') {
+      this.windowsCard.connect();
+      this.windowsCard.GetCardData((err: any, data: any) => {
+        if (!err) {
+          if (this.SelectedStudent.uid != null) {
+            this.addToTable();
+          }
+          this.socket.socket.emit('deliver', {
+            card: true,
+            meal: 2,
+            place: '',
+            uid: data,
+          });
+        }
+      });
+    }
   }
 
   sidenavEvent() {
@@ -186,6 +263,48 @@ export class HomeComponent implements OnInit {
       this.addToTable();
     }
 
+    if (!this.online) {
+      this.SelectedStudent = {
+        cardId: data.uid,
+        uid: data.uid,
+        card : data.card,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        emnumber: data.uid,
+        foods: ['غذای اصلی'],
+        drinkings: [],
+        optionals: [],
+      };
+
+
+
+      const index = this.deliveredList.find((userd) => {
+
+        if (userd.uid === this.SelectedStudent.uid) {
+          return true;
+        }
+      });
+
+      console.log(index);
+      console.log( this.deliveredList);
+
+
+      if (!index) {
+        this.message = 'عدم اتصال به اینترنت';
+
+
+        const add: any = this.SelectedStudent;
+        add.time = moment().format('jYYYY/jMM/jDD hh:mm:ss');
+        this.deliveredList.push(add);
+        localStorage.offlineDeliver =  JSON.stringify(this.deliveredList);
+
+      } else {
+        this.message = `تکرار عملکرد عدم اتصال به اینترنت  ${index.time}`;
+      }
+
+      return;
+    }
+
     if (data != null) {
       this.socket.socket.emit('deliver', {
         card: false,
@@ -219,9 +338,11 @@ export class HomeComponent implements OnInit {
     }
     this.studentData.unshift(this.SelectedStudent);
     localStorage.setItem(`studentData_`, JSON.stringify(this.studentData));
+
     this.SelectedStudent = {
       cardId: null,
       uid: null,
+      card: null,
       firstname: null,
       lastname: null,
       emnumber: null,
@@ -237,7 +358,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  playAudio(n) {
+  playAudio(n: string) {
     const audio = new Audio();
     audio.src = '/assets/' + n;
     audio.load();

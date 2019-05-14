@@ -11,6 +11,7 @@ interface User {
   name: string;
   all: number;
   deliveried: number;
+  negti: number;
 }
 @Component({
   selector: 'app-sidenav',
@@ -21,12 +22,35 @@ interface User {
 export class SidenavComponent implements OnInit {
   public chart: any;
   public meal = null;
+  public dow = null;
+  public week = null;
+  public days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
   public foods: User[] = [
     {
       name: 'غذای اصلی',
       all: 0,
-      deliveried: 0
-    }
+      deliveried: 0,
+      negti : 0
+    },
+    {
+      name: 'غذای دوم',
+      all: 0,
+      deliveried: 0,
+      negti : 0
+    },
+    {
+      name: 'غذای سوم',
+      all: 0,
+      deliveried: 0,
+      negti : 0
+    },
+    {
+      name: 'غذای چهارم',
+      all: 0,
+      deliveried: 0,
+      negti : 0
+
+    },
   ];
   meals = [
     {
@@ -41,25 +65,25 @@ export class SidenavComponent implements OnInit {
     },
     {
       name: 'صبحانه',
-      id: 3,
+      id: 5,
       enabled: false
     },
     {
       name: 'سحری',
-      id: 4,
+      id: 3,
       enabled: false
     },
     {
       name: 'افطاری',
-      id: 5,
+      id: 4,
       enabled: false
     },
   ];
   constructor(private dialog: MatDialog, private socket: SocketService) { }
 
   ngOnInit() {
+    Chart.defaults.global.defaultFontFamily = 'SDF';
     if (localStorage.token) {
-
       this.socket.socket.on('deliverstats', (data) => {
         console.log(data);
         this.foods[0].all = Number(data.all);
@@ -74,7 +98,7 @@ export class SidenavComponent implements OnInit {
       this.socket.socket.on('delivered', (data) => {
         if (data.delivered) {
           this.foods[0].deliveried = this.foods[0].deliveried + 1;
-          this.chart.data.datasets[2].data[0] = this.foods[0].deliveried;
+          this.chart.data.datasets[1].data[0] = this.foods[0].deliveried;
 
           this.chart.update();
         }
@@ -82,6 +106,10 @@ export class SidenavComponent implements OnInit {
 
     }
     this.loadChart();
+
+    setInterval(() => {
+      this.socket.socket.emit('Selectmeal', null);
+    }, 3600000);
   }
 
   loadChart() {
@@ -121,6 +149,21 @@ export class SidenavComponent implements OnInit {
       });
   }
 
+  weekController() {
+
+    const week = Number(this.week);
+    if (!this.week) {
+      this.week = null;
+      return;
+    }
+    if (week <= 0) {
+      this.week = 1;
+    }
+    if (week  > 53) {
+      this.week = 53;
+    }
+  }
+
   freeFoodStudent(index) {
     this.dialog.open(FreeFoodStudentComponent)
       .afterClosed().subscribe(result => {
@@ -129,7 +172,9 @@ export class SidenavComponent implements OnInit {
   }
 
   change() {
-    this.socket.socket.emit('Selectmeal', this.meal);
+    this.weekController();
+
+    this.socket.socket.emit('Selectmeal', {meal : this.meal, dow : this.dow, week : this.week});
     localStorage.removeItem(`studentData_`);
   }
 

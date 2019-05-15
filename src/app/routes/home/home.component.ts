@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   public opened = false;
   public mode = 'side';
   public mini = false;
-  public online = false;
+  public online = true;
   public linestatus = false;
   public msgTxt = '';
   public delivered = true;

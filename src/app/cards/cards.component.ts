@@ -3,6 +3,7 @@ import { SocketService } from '../services/global/socket.service';
 import { GbSocketService } from '../services/global/gbsocket.service';
 import { MatSnackBar } from '@angular/material';
 import { WindowCardServiceService } from '../services/card/windows/window-card-service.service';
+import { resetCompiledComponents } from '@angular/core/src/render3/jit/module';
 
 @Component({
   selector: 'app-cards',
@@ -35,24 +36,39 @@ export class CardsComponent implements OnInit {
 
     this.gbsocket.socket.on('news', (data: { message: string; }) => {
       this.snackbar.open(data.message, 'بستن', {
-        duration: 1000,
+        duration: 3000,
       });
     });
 
-    let OSName = 'Unknown OS';
-    if (navigator.appVersion.indexOf('Win') !== -1) { OSName = 'Windows'; }
-    if (navigator.appVersion.indexOf('Mac') !== -1) { OSName = 'MacOS'; }
-    if (navigator.appVersion.indexOf('X11') !== -1) { OSName = 'UNIX'; }
-    if (navigator.appVersion.indexOf('Linux') !== -1) { OSName = 'Linux'; }
-    if (OSName === 'Windows') {
+   
       this.windowsCard.connect();
       this.windowsCard.GetCardData((err: any, data: any) => {
+        console.log(data)
         this.InputData.card = data
+        this.cardAtr = data
       });
-    }
   }
 
   submit(){
+
+    console.log(this.InputData)
     this.socket.socket.emit('defcard', this.InputData)
+
+    this.reset()
+
+  }
+  removeCard(){
+    this.socket.socket.emit('remcard', this.InputData)
+
+    this.reset()
+  }
+  reset(){
+
+
+    this.InputData = {
+      uid : '',
+      card : ''
+    };
+    this.cardAtr = ''
   }
 }

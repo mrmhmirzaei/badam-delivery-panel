@@ -20,17 +20,23 @@
         <mat-chip color="primary" selected *ngIf="false">کارت کاربر  فعال است</mat-chip>
 
         <mat-chip color="accent" selected *ngIf="!cardAtr">در انتظار ورود کارت</mat-chip>
-        <mat-chip color="primary" selected *ngIf="cardAtr">کارت شناسایی شد {{cardAtr}} </mat-chip>
+        <mat-chip color="primary" selected *ngIf="cardAtr"  [matMenuTriggerFor]="appMenu">کارت شناسایی شد {{cardAtr}} </mat-chip>
 
       </mat-chip-list>
 
 
+      <mat-menu #appMenu="matMenu"  #appMenu="matMenu">
+        <button mat-menu-item (click)="removeCard()">حذف کارت</button>
+        <button mat-menu-item>راهنما</button>
+      </mat-menu>
     </mat-card-content>
     <button mat-raised-button color="primary" (click)="submit()">ذخیره تغییرات</button>
+    <button mat-raised-button color="primary" (click)="reset()">ریست</button>
 
   </mat-card>
   
-
+  <br>
+  
 
  
 </div>

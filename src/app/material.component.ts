@@ -5,8 +5,7 @@ import { MatSidenavModule,
    MatButtonModule, MatInputModule,
    MatTableModule, MatAutocompleteModule,
    MatFormFieldModule, MatDialogModule,
-   MatSnackBarModule, MatProgressSpinnerModule,
-   MatBottomSheetModule, MatChipsModule, MatSelectModule} from '@angular/material';
+   MatSnackBarModule, MatProgressSpinnerModule,MatCardModule,   MatBottomSheetModule, MatChipsModule, MatSelectModule} from '@angular/material';
 
 const module = [
   MatSidenavModule,
@@ -19,6 +18,7 @@ const module = [
   MatFormFieldModule,
   MatDialogModule, MatSnackBarModule,
   MatProgressSpinnerModule,
+  MatCardModule,
   MatBottomSheetModule,
   MatSelectModule,
   MatChipsModule];

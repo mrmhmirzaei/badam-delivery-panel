@@ -31,10 +31,12 @@ import { CardDefinitionComponent } from './dialogs/card-definition/card-definiti
 import { PenaltyComponent } from './dialogs/penalty/penalty.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CardsComponent } from './cards/cards.component';
 
 const routes:Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'card', component: CardsComponent }
 ]
 
 @NgModule({
@@ -49,6 +51,7 @@ const routes:Routes = [
     LoginComponent,
     CardDefinitionComponent,
     PenaltyComponent,
+    CardsComponent,
   ],
   imports: [
     BrowserModule,

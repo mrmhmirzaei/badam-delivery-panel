@@ -18,7 +18,7 @@ export class WindowCardServiceService {
       let data = JSON.parse(wsMsg).data.data;
       console.log(data);
       if (data === '') {
-        callback('notfound', null)
+        callback('notfound', null);
       }
       if (data.startsWith('3b868001f0')) {
         data = data.replace('3b868001f0', '');
@@ -26,15 +26,15 @@ export class WindowCardServiceService {
        data = data.replace('3bf99100ff9181713c40000a80', '');
        data = data.slice(0, -2);
      } else {
-      callback('notfound', null)
+      callback(null,  data.toUpperCase());
      }
-     callback(null,  data.toUpperCase())
+      callback(null,  data.toUpperCase());
 
 
     };
   }
 
-  converter(){
+  converter() {
 
   }
 }

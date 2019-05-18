@@ -3,7 +3,7 @@ import { SocketService } from '../services/global/socket.service';
 import { GbSocketService } from '../services/global/gbsocket.service';
 import { MatSnackBar } from '@angular/material';
 import { WindowCardServiceService } from '../services/card/windows/window-card-service.service';
-import { resetCompiledComponents } from '@angular/core/src/render3/jit/module';
+import { LinuxCardServiceService } from '../services/card/linux/linux-card-service.service';
 
 @Component({
   selector: 'app-cards',
@@ -15,7 +15,7 @@ export class CardsComponent implements OnInit {
   constructor(
     private snackbar: MatSnackBar,
     private windowsCard: WindowCardServiceService,
-
+    private linuxCard:LinuxCardServiceService,
     private socket: SocketService,
     private gbsocket: GbSocketService,
   ) { }
@@ -42,8 +42,14 @@ export class CardsComponent implements OnInit {
 
    
       this.windowsCard.connect();
+      this.linuxCard.connect();
+
       this.windowsCard.GetCardData((err: any, data: any) => {
-        console.log(data)
+        this.InputData.card = data
+        this.cardAtr = data
+      });
+
+      this.linuxCard.GetCardData((err: any, data: any) => {
         this.InputData.card = data
         this.cardAtr = data
       });

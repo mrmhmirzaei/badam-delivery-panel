@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,12 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class AppComponent {
 
-  constructor(private swUpdate: SwUpdate) {
+  constructor(private swUpdate: SwUpdate,  private route: ActivatedRoute) {
+    this.route.queryParams.subscribe(params => {
+      if(params['token']){
+        localStorage.setItem('token', params['token'])
+      }
+  })
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe((evt) => {
         setTimeout(() => {
@@ -22,5 +28,9 @@ export class AppComponent {
         console.log('مشکل در اپدیت رایدا');
       });
     }
+  }
+  ngOnInit() {
+    
+ 
   }
 }

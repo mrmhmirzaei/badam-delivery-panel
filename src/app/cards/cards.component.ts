@@ -5,6 +5,11 @@ import { MatSnackBar } from '@angular/material';
 import { WindowCardServiceService } from '../services/card/windows/window-card-service.service';
 import { LinuxCardServiceService } from '../services/card/linux/linux-card-service.service';
 
+import {
+  Router,
+
+} from '@angular/router';
+
 @Component({
   selector: 'app-cards',
   templateUrl: './cards.component.html',
@@ -18,6 +23,7 @@ export class CardsComponent implements OnInit {
     private linuxCard:LinuxCardServiceService,
     private socket: SocketService,
     private gbsocket: GbSocketService,
+    private router:Router,
   ) { }
 
   userCard = false;
@@ -31,6 +37,10 @@ export class CardsComponent implements OnInit {
     card : null
   }
   ngOnInit() {
+    if (!localStorage.token) {
+      this.router.navigate(['/login']);
+      return
+    }
     this.gbsocket.socket = this.gbsocket.connect('https://message.rayda.ir/');
     this.socket.socket = this.socket.connect('https://deliver.rayda.ir/');
 

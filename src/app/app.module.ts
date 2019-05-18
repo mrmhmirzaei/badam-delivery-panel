@@ -36,6 +36,7 @@ import { CardsComponent } from './cards/cards.component';
 const routes:Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+
   { path: 'card', component: CardsComponent }
 ]
 
